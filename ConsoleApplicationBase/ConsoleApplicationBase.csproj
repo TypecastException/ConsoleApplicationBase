@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DefaultCommands.cs" />
+    <Compile Include="Commands\Users.cs" />
     <Compile Include="ConsoleCommand.cs" />
     <Compile Include="ConsoleFormatting.cs" />
+    <Compile Include="Models\SampleData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
