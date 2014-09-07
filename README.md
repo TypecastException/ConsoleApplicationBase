@@ -25,7 +25,7 @@ As it is currently configured, this application makes a few assumptions about ar
 Defining Commands
 -----------------
 
-If you were to define the following commands in your `DefaultCommands` class, you will be able to execute these from the Console when you run the application. The DefaultCommands class must be present in the project, and must be within the `Commands` namespace (note that the methods must be `static` in order to be available to the console as commands, and the project assumes a `string` return type), 
+If you were to define the following (trival example-style) commands in your `DefaultCommands` class, you will be able to execute these from the Console when you run the application. The DefaultCommands class must be present in the project, and must be within the `Commands` namespace (note that the methods must be `static` in order to be available to the console as commands, and the project assumes a `string` return type), 
 
 ```csharp
 public static string DoSomething(int id, string data)
