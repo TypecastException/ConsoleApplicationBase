@@ -21,7 +21,7 @@ As it is currently configured, this application makes a few assumptions about ar
 * Classes containing methods representing Console commands will be located in the Commands namespace, and in the Commands folder. 
 * There will always be a static class named DefaultCommands from which methods may be invoked from the Console directly by name. For many console project, this will likely be sufficient. 
 * Commands defined on classes other than DefaultCommands will be invoked from the console using the familiar dot syntax: ClassName.CommandName. 
-* 
+
 Defining Commands
 -----------------
 
