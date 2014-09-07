@@ -17,15 +17,15 @@ Assumptions
 
 As it is currently configured, this application makes a few assumptions about architecture. You can easily adapt things to suit your purposes, but out-of-the-box, the following "rules" are assumed:
 
-* Methods representing Console commands will be defined as public static methods which always return a string, and are defined on public static classes. 
-* Classes containing methods representing Console commands will be located in the Commands namespace, and in the Commands folder. 
-* There will always be a static class named DefaultCommands from which methods may be invoked from the Console directly by name. For many console project, this will likely be sufficient. 
+* Methods representing Console commands will be defined as `public static` methods which always return a `string`, and are defined on `public static` classes. 
+* Classes containing methods representing Console commands will be located in the `Commands` namespace, and in the *Commands* folder. 
+* There will always be a static class named `DefaultCommands` from which methods may be invoked from the Console directly by name. For many console projects, this will likely be sufficient. 
 * Commands defined on classes other than DefaultCommands will be invoked from the console using the familiar dot syntax: ClassName.CommandName. 
 
 Defining Commands
 -----------------
 
-If you define the following commands in your DefaultCommands class. The DefaultCommands class must be present in the project, and must be within the Commands namespace (note that the methods must be static in order to be available to the console as commands, and the project assumes a string return type), you will be able to execute these from the Console when you run the application. 
+If you were to define the following commands in your `DefaultCommands` class, you will be able to execute these from the Console when you run the application. The DefaultCommands class must be present in the project, and must be within the `Commands` namespace (note that the methods must be `static` in order to be available to the console as commands, and the project assumes a `string` return type), 
 
 ```csharp
 public static string DoSomething(int id, string data)
@@ -61,20 +61,20 @@ Executing Commands
 
 The commands above can be executed when you run the application with the following syntax:
 
-Execute the DoSomething command:
+Execute the `DoSomething` command:
 
 ```
 console> DoSomething 55 "My Data"
 ```
 
-Execute the DoSomethingElse command:
+Execute the `DoSomethingElse` command:
 
 ```
 console> DoSomethingElse 7/4/2014
 ```
 The console recognizes and deals with optional method parameters. 
 
-Execute the DoSomethingOptional command inluding optional parameters:
+Execute the `DoSomethingOptional` command inluding optional parameters:
 
 ```
 console> DoSomethingOptional 212 "This is my optional data"
