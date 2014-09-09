@@ -47,32 +47,28 @@ namespace ConsoleApplicationBase
 
         static void Run()
         {
-            // Get input from the user:
-            var consoleInput = ReadFromConsole();
-            if(string.IsNullOrWhiteSpace(consoleInput))
-            {
-                // Nothing was provided - start over:
-                Run();
-            }
-            try
-            {
-                // Create a ConsoleCommand instance:
-                var cmd = new ConsoleCommand(consoleInput);
+            while (true)
+            {  
+                var consoleInput = ReadFromConsole();
+                if (string.IsNullOrWhiteSpace(consoleInput)) continue;
 
-                // Execute the command:
-                string result = Execute(cmd);
+                try
+                {
+                    // Create a ConsoleCommand instance:
+                    var cmd = new ConsoleCommand(consoleInput);
 
-                // Write out the result:
-                WriteToConsole(result);
-            }
-            catch (Exception ex)
-            {
-                // OOPS! Something went wrong - Write out the problem:
-                WriteToConsole(ex.Message);
-            }
+                    // Execute the command:
+                    string result = Execute(cmd);
 
-            // Always return to Run():
-            Run();
+                    // Write out the result:
+                    WriteToConsole(result);
+                }
+                catch (Exception ex)
+                {
+                    // OOPS! Something went wrong - Write out the problem:
+                    WriteToConsole(ex.Message);
+                }
+            }
         }
 
 
