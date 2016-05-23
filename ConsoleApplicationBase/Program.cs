@@ -19,7 +19,7 @@ namespace ConsoleApplicationBase
             // Any static classes containing commands for use from the 
             // console are located in the Commands namespace. Load 
             // references to each type in that namespace via reflection:
-            _commandLibraries = new Dictionary<string, Dictionary<string, 
+            _commandLibraries = new Dictionary<string, Dictionary<string,
                     IEnumerable<ParameterInfo>>>();
 
             // Use reflection to load all of the classes in the Commands namespace:
@@ -48,7 +48,7 @@ namespace ConsoleApplicationBase
         static void Run()
         {
             while (true)
-            {  
+            {
                 var consoleInput = ReadFromConsole();
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;
 
@@ -57,11 +57,24 @@ namespace ConsoleApplicationBase
                     // Create a ConsoleCommand instance:
                     var cmd = new ConsoleCommand(consoleInput);
 
-                    // Execute the command:
-                    string result = Execute(cmd);
-
-                    // Write out the result:
-                    WriteToConsole(result);
+                    switch (cmd.Name)
+                    {
+                        case "help":
+                        case "?":
+                        case "ayuda":
+                            WriteToConsole(BuildHelpMessage());
+                            break;
+                        case "exit":
+                        case "salir":
+                            WriteToConsole("Closing program...");
+                            return;
+                        default:
+                            // Execute the command:
+                            string result = Execute(cmd);
+                            // Write out the result:
+                            WriteToConsole(result);
+                            break;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -85,12 +98,12 @@ namespace ConsoleApplicationBase
             // Validate the command name:
             if (!_commandLibraries.ContainsKey(command.LibraryClassName))
             {
-                return badCommandMessage;
+                return badCommandMessage + BuildHelpMessage();
             }
             var methodDictionary = _commandLibraries[command.LibraryClassName];
             if (!methodDictionary.ContainsKey(command.Name))
             {
-                return badCommandMessage;
+                return badCommandMessage + System.Environment.NewLine + BuildHelpMessage(command.LibraryClassName);
             }
 
             // Make sure the corret number of required arguments are provided:
@@ -108,9 +121,12 @@ namespace ConsoleApplicationBase
 
             if (requiredCount > providedCount)
             {
-                return string.Format(
-                    "Missing required argument. {0} required, {1} optional, {2} provided",
+                var message = string.Format(
+                    "Missing required parameters. {0} required, {1} optinal, {2} provided",
                     requiredCount, optionalCount, providedCount);
+                string comando = command.LibraryClassName + "." + command.Name;
+                message += Environment.NewLine + paramInfoList.Aggregate<ParameterInfo, String>("Call: " + comando, (total, next) => total + "  " + next.Name + " <" + next.ParameterType.Name + ">");
+                return message;
             }
 
             // Make sure all arguments are coerced to the proper type, and that there is a 
@@ -196,8 +212,8 @@ namespace ConsoleApplicationBase
         static object CoerceArgument(Type requiredType, string inputValue)
         {
             var requiredTypeCode = Type.GetTypeCode(requiredType);
-            string exceptionMessage = 
-                string.Format("Cannnot coerce the input argument {0} to required type {1}", 
+            string exceptionMessage =
+                string.Format("Cannnot coerce the input argument {0} to required type {1}",
                 inputValue, requiredType.Name);
 
             object result = null;
@@ -365,7 +381,7 @@ namespace ConsoleApplicationBase
 
         public static void WriteToConsole(string message = "")
         {
-            if(message.Length > 0)
+            if (message.Length > 0)
             {
                 Console.WriteLine(message);
             }
@@ -378,6 +394,27 @@ namespace ConsoleApplicationBase
             // Show a prompt, and get input:
             Console.Write(_readPrompt + promptMessage);
             return Console.ReadLine();
+        }
+
+        static string BuildHelpMessage(string library = null)
+        {
+            var sb = new StringBuilder("Commands: ");
+            sb.AppendLine();
+            foreach (var item in _commandLibraries)
+            {
+                if (library != null && item.Key != library)
+                    continue;
+                foreach (var cmd in item.Value)
+                {
+                    sb.Append(ConsoleFormatting.Indent(1));
+                    sb.Append(item.Key);
+                    sb.Append(".");
+                    sb.Append(cmd.Key);
+                    sb.AppendLine();
+                }
+
+            }
+            return sb.ToString();
         }
     }
 }
