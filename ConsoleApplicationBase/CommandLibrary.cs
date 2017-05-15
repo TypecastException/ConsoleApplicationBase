@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,42 +10,25 @@ namespace ConsoleApplicationBase
 {
     public static class CommandLibrary
     {
-        const string _commandNamespace = "ConsoleApplicationBase.Commands";
-        public static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> Content;
+        public static readonly string CommandNamespace = "ConsoleApplicationBase.Commands";
+        public static Dictionary<string, CommandClassInfo> Content;
 
 
         static CommandLibrary()
         {
-            Content = new Dictionary<string, Dictionary<string,IEnumerable<ParameterInfo>>>();
+            Content = new Dictionary<string, CommandClassInfo>();
             initialize();
         }
 
 
         static void initialize()
         {
-            // Use reflection to load all of the classes in the Commands namespace:
-            //var q = from t in Assembly.GetExecutingAssembly().GetTypes()
-            //        where t.IsClass && t.Namespace == _commandNamespace
-            //        select t;
-            //var commandClasses = q.ToList();
+            var assembly = Assembly.GetExecutingAssembly();
+            var commandClasses = listMatchingAssemblyTypes(assembly);
+            
+            addCommands(assembly, commandClasses);
 
-            var commandClasses = listMatchingAssemblyTypes(Assembly.GetExecutingAssembly());
-
-            //foreach (var commandClass in commandClasses)
-            //{
-            //    // Load the method info from each class into a dictionary:
-            //    var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
-            //    var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
-            //    foreach (var method in methods)
-            //    {
-            //        string commandName = method.Name;
-            //        methodDictionary.Add(commandName, method.GetParameters());
-            //    }
-            //    // Add the dictionary of methods for the current class into a dictionary of command classes:
-            //    Content.Add(commandClass.Name, methodDictionary);
-            //}
-
-            addCommands(commandClasses);
+            //addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
         }
 
         /// <summary>
@@ -57,19 +41,18 @@ namespace ConsoleApplicationBase
         static List<Type> listMatchingAssemblyTypes(Assembly assmbl)
         {
             var q = from t in assmbl.GetTypes()
-                    where t.IsClass && t.Namespace == _commandNamespace
+                    where t.IsClass && t.Namespace == CommandNamespace
                     select t;
             
             return q.ToList();
         }
 
-
         /// <summary>
         /// Adds public static methods from a list of classes
-        /// to Content
         /// </summary>
+        /// <param name="owningAssembly"></param>
         /// <param name="cmdClasses"></param>
-        static void addCommands(List<Type> cmdClasses)
+        static void addCommands(Assembly owningAssembly,List<Type> cmdClasses)
         {
             foreach (var commandClass in cmdClasses)
             {
@@ -81,7 +64,22 @@ namespace ConsoleApplicationBase
                     methodDictionary.Add(commandName, method.GetParameters());
                 }
                 // Add the dictionary of methods for the current class into a dictionary of command classes:
-                Content.Add(commandClass.Name, methodDictionary);
+                CommandLibrary.Content.Add(commandClass.Name, new CommandClassInfo(owningAssembly, methodDictionary));
+            }
+        }
+
+        /// <summary>
+        /// adds suitable commands from a specified assembly file
+        /// </summary>
+        /// <param name="assemblyFile"></param>
+        public static void addCommandsFromAssemblyFile(string assemblyFile)
+        {
+            if (File.Exists(assemblyFile))
+            {
+                var extAssembly = Assembly.LoadFrom(assemblyFile);
+                var extCommandCLasses = listMatchingAssemblyTypes(extAssembly);
+
+                addCommands(extAssembly, extCommandCLasses);
             }
         }
 

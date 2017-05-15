@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,12 @@ namespace ConsoleApplicationBase.Commands
                 + "was not provided, so I saved the value '{1}'", id, data);
             }
             return result;
+        }
+
+        public static string AddExternalAssembly(string assemblyFile)
+        {
+            CommandLibrary.addCommandsFromAssemblyFile(assemblyFile);
+            return "added Assembly File : " + Path.GetFileName(assemblyFile);
         }
     }
 }
