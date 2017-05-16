@@ -28,7 +28,7 @@ namespace ConsoleApplicationBase
 
             addCommands(assembly, commandClasses);
 
-            addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
+            //addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
 
         }
 
