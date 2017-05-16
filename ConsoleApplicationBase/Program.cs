@@ -10,38 +10,12 @@ namespace ConsoleApplicationBase
     class Program
     {
         const string _commandNamespace = "ConsoleApplicationBase.Commands";
-        static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
+        //static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
 
         static void Main(string[] args)
         {
             Console.Title = typeof(Program).Name;
-
-            //_commandLibraries = CommandLibrary.Content;
-
-            // Any static classes containing commands for use from the 
-            // console are located in the Commands namespace. Load 
-            // references to each type in that namespace via reflection:
-            //_commandLibraries = new Dictionary<string, Dictionary<string,IEnumerable<ParameterInfo>>>();
-
-            // Use reflection to load all of the classes in the Commands namespace:
-            //var q = from t in Assembly.GetExecutingAssembly().GetTypes()
-            //        where t.IsClass && t.Namespace == _commandNamespace
-            //        select t;
-            //var commandClasses = q.ToList();
-
-            //foreach (var commandClass in commandClasses)
-            //{
-            //    // Load the method info from each class into a dictionary:
-            //    var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
-            //    var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
-            //    foreach (var method in methods)
-            //    {
-            //        string commandName = method.Name;
-            //        methodDictionary.Add(commandName, method.GetParameters());
-            //    }
-            //    // Add the dictionary of methods for the current class into a dictionary of command classes:
-            //    _commandLibraries.Add(commandClass.Name, methodDictionary);
-            //}
+            
             Run();
         }
 
@@ -88,8 +62,8 @@ namespace ConsoleApplicationBase
             {
                 return badCommandMessage;
             }
-            var methodDictionary = CommandLibrary.Content[command.LibraryClassName];
-            if (!methodDictionary.ContainsKey(command.Name))
+            var commandClassInfo = CommandLibrary.Content[command.LibraryClassName];
+            if (!commandClassInfo.MethodDictionary.ContainsKey(command.Name))
             {
                 return badCommandMessage;
             }
@@ -98,7 +72,7 @@ namespace ConsoleApplicationBase
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
             var methodParameterValueList = new List<object>();
-            IEnumerable<ParameterInfo> paramInfoList = methodDictionary[command.Name].ToList();
+            IEnumerable<ParameterInfo> paramInfoList = commandClassInfo.MethodDictionary[command.Name].ToList();
 
             // Validate proper # of required arguments provided. Some may be optional:
             var requiredParams = paramInfoList.Where(p => p.IsOptional == false);

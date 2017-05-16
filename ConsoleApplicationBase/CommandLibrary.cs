@@ -10,12 +10,12 @@ namespace ConsoleApplicationBase
     public static class CommandLibrary
     {
         const string _commandNamespace = "ConsoleApplicationBase.Commands";
-        public static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> Content;
+        public static Dictionary<string, CommandClassInfo> Content { get; }
 
 
         static CommandLibrary()
         {
-            Content = new Dictionary<string, Dictionary<string,IEnumerable<ParameterInfo>>>();
+            Content = new Dictionary<string, CommandClassInfo>();
             initialize();
         }
 
@@ -81,7 +81,7 @@ namespace ConsoleApplicationBase
                     methodDictionary.Add(commandName, method.GetParameters());
                 }
                 // Add the dictionary of methods for the current class into a dictionary of command classes:
-                Content.Add(commandClass.Name, methodDictionary);
+                Content.Add(commandClass.Name, new CommandClassInfo(null ,methodDictionary));
             }
         }
 
