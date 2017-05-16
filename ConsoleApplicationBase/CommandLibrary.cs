@@ -10,7 +10,7 @@ namespace ConsoleApplicationBase
 {
     public static class CommandLibrary
     {
-        const string _commandNamespace = "ConsoleApplicationBase.Commands";
+        public static readonly string CommandNamespace = "ConsoleApplicationBase.Commands";
         public static Dictionary<string, CommandClassInfo> Content { get; }
 
 
@@ -42,7 +42,7 @@ namespace ConsoleApplicationBase
         static List<Type> listMatchingAssemblyTypes(Assembly assmbl)
         {
             var q = from t in assmbl.GetTypes()
-                    where t.IsClass && t.Namespace == _commandNamespace
+                    where t.IsClass && t.Namespace == CommandNamespace
                     select t;
             
             return q.ToList();

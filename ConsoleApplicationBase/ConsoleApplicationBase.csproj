@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandClassInfo.cs" />
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="CommandLibrary.cs" />
     <Compile Include="Commands\DefaultCommands.cs" />
     <Compile Include="Commands\Users.cs" />
