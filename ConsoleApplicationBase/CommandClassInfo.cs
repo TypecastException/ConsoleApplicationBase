@@ -9,7 +9,7 @@ namespace ConsoleApplicationBase
 {
     public class CommandClassInfo
     {
-        public Assembly OwningAssembly { get;}
+        public Assembly OwningAssembly { get; }
         public Dictionary<string, IEnumerable<ParameterInfo>> MethodDictionary { get; }
 
         public CommandClassInfo(Assembly owningAssembly, Dictionary<string, IEnumerable<ParameterInfo>> methodDict)
@@ -17,6 +17,5 @@ namespace ConsoleApplicationBase
             this.OwningAssembly = owningAssembly;
             this.MethodDictionary = methodDict;
         }
-
     }
 }

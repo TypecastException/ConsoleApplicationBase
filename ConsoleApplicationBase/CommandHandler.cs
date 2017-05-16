@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplicationBase
 {
-    public class CommandHandler
+    public static class CommandHandler
     {
-        static List<object> methodParameterValueList = new List<object>();
-        static IEnumerable<ParameterInfo> paramInfoList;
+        //static List<object> methodParameterValueList = new List<object>();
+        //static IEnumerable<ParameterInfo> paramInfoList;
 
         public static string Execute(ConsoleCommand command2Execute)
         {
             // Validate the class name and command name:
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
             string badCommandMessage = string.Format(""
                 + "Unrecognized command \'{0}.{1}\'. "
                 + "Please type a valid command.",
@@ -27,11 +26,7 @@ namespace ConsoleApplicationBase
             {
                 return badCommandMessage;
             }
-            //var methodDictionary = CommandLibrary.Content[command2Execute.LibraryClassName];
-            //if (!methodDictionary.ContainsKey(command2Execute.Name))
-            //{
-            //    return badCommandMessage;
-            //}
+            
             var commandClassInfo = CommandLibrary.Content[command2Execute.LibraryClassName];
             if (!commandClassInfo.MethodDictionary.ContainsKey(command2Execute.Name))
             {
@@ -40,8 +35,8 @@ namespace ConsoleApplicationBase
 
             // Make sure the corret number of required arguments are provided:
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-            paramInfoList = commandClassInfo.MethodDictionary[command2Execute.Name].ToList();
+            var methodParameterValueList = new List<object>();
+            IEnumerable<ParameterInfo> paramInfoList = commandClassInfo.MethodDictionary[command2Execute.Name].ToList();
 
             // Validate proper # of required arguments provided. Some may be optional:
             var requiredParams = paramInfoList.Where(p => p.IsOptional == false);

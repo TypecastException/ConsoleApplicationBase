@@ -5,13 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApplicationBase.Properties;
 
 namespace ConsoleApplicationBase
 {
     public static class CommandLibrary
     {
         public static readonly string CommandNamespace = "ConsoleApplicationBase.Commands";
-        public static Dictionary<string, CommandClassInfo> Content;
+        public static Dictionary<string, CommandClassInfo> Content { get; }
 
 
         static CommandLibrary()
@@ -25,10 +26,15 @@ namespace ConsoleApplicationBase
         {
             var assembly = Assembly.GetExecutingAssembly();
             var commandClasses = listMatchingAssemblyTypes(assembly);
-            
+
+            //add commands defined inside DefaultCommands
             addCommands(assembly, commandClasses);
 
-            //addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
+            //add commands from external assemblies listed in App.config
+            foreach (var assemblyFile in Settings.Default.AssemblyFiles)
+            {
+                addCommandsFromAssemblyFile(assemblyFile);
+            }
         }
 
         /// <summary>
@@ -47,12 +53,13 @@ namespace ConsoleApplicationBase
             return q.ToList();
         }
 
+
         /// <summary>
         /// Adds public static methods from a list of classes
         /// </summary>
         /// <param name="owningAssembly"></param>
         /// <param name="cmdClasses"></param>
-        static void addCommands(Assembly owningAssembly,List<Type> cmdClasses)
+        static void addCommands(Assembly owningAssembly, List<Type> cmdClasses)
         {
             foreach (var commandClass in cmdClasses)
             {

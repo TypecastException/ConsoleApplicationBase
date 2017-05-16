@@ -42,8 +42,21 @@ namespace ConsoleApplicationBase.Commands
 
         public static string AddExternalAssembly(string assemblyFile)
         {
-            CommandLibrary.addCommandsFromAssemblyFile(assemblyFile);
-            return "added Assembly File : " + Path.GetFileName(assemblyFile);
+            if (File.Exists(assemblyFile))
+            {
+                CommandLibrary.addCommandsFromAssemblyFile(assemblyFile);
+                return "added Assembly File : " + Path.GetFileName(assemblyFile);
+            }
+            else
+            {
+                return "Assembly file \'" + Path.GetFileName(assemblyFile) + "\' does not exist";
+            }
+        }
+
+        public static string Exit()
+        {
+            AppState.SetState(State.IDLE);
+            return "Exiting Application...";
         }
     }
 }

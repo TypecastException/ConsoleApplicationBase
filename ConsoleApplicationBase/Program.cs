@@ -9,20 +9,17 @@ namespace ConsoleApplicationBase
 {
     class Program
     {
-        //const string _commandNamespace = "ConsoleApplicationBase.Commands";
-        static Dictionary<string, Dictionary<string, IEnumerable<ParameterInfo>>> _commandLibraries;
-
         static void Main(string[] args)
         {
             Console.Title = typeof(Program).Name;
-
+            
             Run();
         }
 
-
         static void Run()
         {
-            while (true)
+            AppState.SetState(State.RUNNING);
+            while (AppState.GetState() > State.IDLE)
             {  
                 var consoleInput = ReadFromConsole();
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;
@@ -53,7 +50,6 @@ namespace ConsoleApplicationBase
                 Console.WriteLine(message);
             }
         }
-
 
         const string _readPrompt = "console> ";
         static string ReadFromConsole(string promptMessage = "")
