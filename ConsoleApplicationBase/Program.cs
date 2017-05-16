@@ -18,7 +18,8 @@ namespace ConsoleApplicationBase
 
         static void Run()
         {
-            while (true)
+            AppState.SetState(State.RUNNING);
+            while (AppState.GetState() > State.IDLE)
             {  
                 var consoleInput = ReadFromConsole();
                 if (string.IsNullOrWhiteSpace(consoleInput)) continue;

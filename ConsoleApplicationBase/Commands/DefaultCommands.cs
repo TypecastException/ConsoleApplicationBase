@@ -52,5 +52,11 @@ namespace ConsoleApplicationBase.Commands
                 return "Assembly file \'" + Path.GetFileName(assemblyFile) + "\' does not exist";
             }
         }
+
+        public static string Exit()
+        {
+            AppState.SetState(State.IDLE);
+            return "Exiting Application...";
+        }
     }
 }

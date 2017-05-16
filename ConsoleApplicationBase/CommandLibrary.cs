@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApplicationBase.Properties;
 
 namespace ConsoleApplicationBase
 {
@@ -26,10 +27,14 @@ namespace ConsoleApplicationBase
             var assembly = Assembly.GetExecutingAssembly();
             var commandClasses = listMatchingAssemblyTypes(assembly);
 
+            //add commands defined inside DefaultCommands
             addCommands(assembly, commandClasses);
 
-            //addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
-
+            //add commands from external assemblies listed in App.config
+            foreach (var assemblyFile in Settings.Default.AssemblyFiles)
+            {
+                addCommandsFromAssemblyFile(assemblyFile);
+            }
         }
 
         /// <summary>
