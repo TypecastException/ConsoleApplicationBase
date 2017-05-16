@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -22,29 +23,13 @@ namespace ConsoleApplicationBase
 
         static void initialize()
         {
-            // Use reflection to load all of the classes in the Commands namespace:
-            //var q = from t in Assembly.GetExecutingAssembly().GetTypes()
-            //        where t.IsClass && t.Namespace == _commandNamespace
-            //        select t;
-            //var commandClasses = q.ToList();
+            var assembly = Assembly.GetExecutingAssembly();
+            var commandClasses = listMatchingAssemblyTypes(assembly);
 
-            var commandClasses = listMatchingAssemblyTypes(Assembly.GetExecutingAssembly());
+            addCommands(assembly, commandClasses);
 
-            //foreach (var commandClass in commandClasses)
-            //{
-            //    // Load the method info from each class into a dictionary:
-            //    var methods = commandClass.GetMethods(BindingFlags.Static | BindingFlags.Public);
-            //    var methodDictionary = new Dictionary<string, IEnumerable<ParameterInfo>>();
-            //    foreach (var method in methods)
-            //    {
-            //        string commandName = method.Name;
-            //        methodDictionary.Add(commandName, method.GetParameters());
-            //    }
-            //    // Add the dictionary of methods for the current class into a dictionary of command classes:
-            //    Content.Add(commandClass.Name, methodDictionary);
-            //}
+            addCommandsFromAssemblyFile("C:\\Users\\rdoe\\Dropbox\\TEX\\Masterarbeit\\src\\consoleApp\\ConsoleApplicationBase\\TestLib\\bin\\Debug\\TestLib.dll");
 
-            addCommands(commandClasses);
         }
 
         /// <summary>
@@ -66,10 +51,10 @@ namespace ConsoleApplicationBase
 
         /// <summary>
         /// Adds public static methods from a list of classes
-        /// to Content
         /// </summary>
+        /// <param name="owningAssembly"></param>
         /// <param name="cmdClasses"></param>
-        static void addCommands(List<Type> cmdClasses)
+        static void addCommands(Assembly owningAssembly, List<Type> cmdClasses)
         {
             foreach (var commandClass in cmdClasses)
             {
@@ -81,7 +66,22 @@ namespace ConsoleApplicationBase
                     methodDictionary.Add(commandName, method.GetParameters());
                 }
                 // Add the dictionary of methods for the current class into a dictionary of command classes:
-                Content.Add(commandClass.Name, new CommandClassInfo(null ,methodDictionary));
+                CommandLibrary.Content.Add(commandClass.Name, new CommandClassInfo(owningAssembly, methodDictionary));
+            }
+        }
+
+        /// <summary>
+        /// adds suitable commands from a specified assembly file
+        /// </summary>
+        /// <param name="assemblyFile"></param>
+        public static void addCommandsFromAssemblyFile(string assemblyFile)
+        {
+            if (File.Exists(assemblyFile))
+            {
+                var extAssembly = Assembly.LoadFrom(assemblyFile);
+                var extCommandCLasses = listMatchingAssemblyTypes(extAssembly);
+
+                addCommands(extAssembly, extCommandCLasses);
             }
         }
 

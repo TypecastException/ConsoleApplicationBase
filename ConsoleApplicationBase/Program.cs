@@ -138,7 +138,8 @@ namespace ConsoleApplicationBase
             // Set up to invoke the method using reflection:
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-            Assembly current = typeof(Program).Assembly;
+            //Assembly current = typeof(Program).Assembly;
+            Assembly current = commandClassInfo.OwningAssembly;
 
             // Need the full Namespace for this:
             Type commandLibaryClass =
