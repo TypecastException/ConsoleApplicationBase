@@ -1,0 +1,6 @@
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\bin\Debug\ConsoleApplicationBase.exe.config
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\bin\Debug\ConsoleApplicationBase.exe
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\bin\Debug\ConsoleApplicationBase.pdb
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\obj\Debug\ConsoleApplicationBase.csprojResolveAssemblyReference.cache
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\obj\Debug\ConsoleApplicationBase.exe
+C:\Users\rdoe\Repositories\masterThesis\ConsoleApplicationBase\obj\Debug\ConsoleApplicationBase.pdb

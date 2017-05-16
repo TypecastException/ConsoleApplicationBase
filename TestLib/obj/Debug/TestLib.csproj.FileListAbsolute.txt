@@ -1,0 +1,5 @@
+C:\Users\rdoe\Repositories\masterThesis\TestLib\bin\Debug\TestLib.dll
+C:\Users\rdoe\Repositories\masterThesis\TestLib\bin\Debug\TestLib.pdb
+C:\Users\rdoe\Repositories\masterThesis\TestLib\obj\Debug\TestLib.csprojResolveAssemblyReference.cache
+C:\Users\rdoe\Repositories\masterThesis\TestLib\obj\Debug\TestLib.dll
+C:\Users\rdoe\Repositories\masterThesis\TestLib\obj\Debug\TestLib.pdb
